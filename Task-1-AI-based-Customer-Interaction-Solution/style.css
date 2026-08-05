@@ -20,8 +20,21 @@ body {
     font-family: 'Outfit', sans-serif;
     line-height: 1.6;
     color: var(--text);
-    background-color: var(--white);
+    background:
+        radial-gradient(circle at top left, rgba(196, 2, 51, 0.08), transparent 28%),
+        linear-gradient(180deg, #ffffff 0%, #fff7f9 100%);
     overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at bottom right, rgba(196, 2, 51, 0.08), transparent 25%),
+        radial-gradient(circle at top right, rgba(0, 0, 0, 0.04), transparent 20%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .container {
@@ -31,9 +44,10 @@ body {
 }
 
 header {
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
     padding: 20px 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(196, 2, 51, 0.12);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -43,6 +57,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
 }
 
 .logo {
@@ -65,15 +80,48 @@ main {
 }
 
 .hero {
-    padding: 80px 0;
+    padding: 90px 0 70px;
     text-align: center;
-    background: linear-gradient(135deg, #FFF 0%, #F8F9FA 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.95) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before,
+.hero::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(196, 2, 51, 0.07);
+}
+
+.hero::before {
+    width: 240px;
+    height: 240px;
+    top: -60px;
+    left: -70px;
+}
+
+.hero::after {
+    width: 180px;
+    height: 180px;
+    bottom: -40px;
+    right: -30px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
 }
 
 .hero h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
+    font-size: clamp(2.35rem, 6vw, 3.2rem);
+    margin-bottom: 18px;
     color: var(--secondary);
+    line-height: 1.15;
+    text-wrap: balance;
 }
 
 .highlight {
@@ -82,32 +130,33 @@ main {
 
 .hero p {
     font-size: 18px;
-    max-width: 600px;
-    margin: 0 auto 40px;
+    max-width: 630px;
+    margin: 0 auto 36px;
     color: #666;
 }
 
 .btn {
     display: inline-block;
     padding: 14px 28px;
-    border-radius: 8px;
+    border-radius: 999px;
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
     border: none;
     font-size: 16px;
     text-decoration: none;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
 .btn-primary {
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, #a00029 100%);
     color: var(--white);
 }
 
 .btn-primary:hover {
-    background: #A00029;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(196, 2, 51, 0.3);
+    background: linear-gradient(135deg, #a00029 0%, var(--primary) 100%);
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 10px 24px rgba(196, 2, 51, 0.32);
 }
 
 .btn-outline {
@@ -122,10 +171,11 @@ main {
 }
 
 .card {
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.94);
     padding: 40px;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
+    border-radius: 20px;
+    box-shadow: 0 16px 50px rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(196, 2, 51, 0.08);
     margin: 40px 0;
 }
 
@@ -555,12 +605,22 @@ footer {
 }
 
 @media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero {
+        padding: 70px 0 45px;
+    }
+
     .hero h1 {
         font-size: 32px;
     }
 
     .card {
         padding: 20px;
+        border-radius: 16px;
     }
 
     .chat-window {
@@ -568,7 +628,9 @@ footer {
         height: calc(100vh - 120px);
         right: -10px;
     }
-}/* Inline Quick Replies (inside bot messages) */
+}
+
+/* Inline Quick Replies (inside bot messages) */
 .inline-quick-replies {
     display: flex;
     flex-wrap: wrap;
